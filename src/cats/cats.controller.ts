@@ -1,19 +1,24 @@
-import { Controller, Get, Query, Post, Body, Put, Param, Delete, Header } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Query, Post, Body, Put, Param, Delete, Res, HttpStatus, Header } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { Observable, of } from 'rxjs';
 import { CreateCat, UpdateCat, ListAllEntities } from './cat.dto';
+import { CatsService } from './cats.service';
 
 @Controller('cats')
 export class CatsController {
+    constructor(
+        private catsService: CatsService
+    ){
+
+    }
     @Post()
-    @Header('Access-Control-Allow-Origin', '*')
-    create(@Body() createCatDto: CreateCat) {
-        return 'This action adds a new cat';
+    create(@Res() res: Response) {
+        res.status(HttpStatus.CREATED).send();
     }
 
     @Get()
-    findAll(@Query() query: ListAllEntities) {
-        return `This action returns all cats (limit: ${query.limit} items)`;
+    findAll(@Res() res: Response) {
+        res.status(HttpStatus.OK).json([])
     }
 
     @Get(':id')
